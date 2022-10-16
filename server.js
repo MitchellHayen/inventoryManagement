@@ -8,9 +8,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 const port = 3000;
 
-const hostname = 'localhost';
-const username = 'root';
-const password = 'mysql';
+//localhost
+const hostname = '18.116.15.247';
+//root local
+//user vps
+const username = 'user';
+//mysql local
+//SE342 vps
+const password = 'SE342';
 const database = 'inventory_manager';
 
 app.get("/items",async function(request,response){
@@ -68,7 +73,7 @@ app.post("/items",async function(request,response){
         conn.end();
     } catch (error){
         response.send("Ran into error ",error);
-        console.log("Ran into error in /items get path ",error);
+        console.log("Ran into error in /items post path ",error);
     }
 })
 
