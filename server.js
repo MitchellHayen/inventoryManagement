@@ -33,4 +33,43 @@ app.get("/items",async function(request,response){
     }
 })
 
+app.post("/items",async function(request,response){
+    try{
+        let conn = mysql.createConnection({host:hostname, user:username, password:password, database:database});
+        await conn.connect();
+
+        let itemID = request.body.itemID;
+        let itemDescription = request.body.itemDescription;
+        let itemQuantity = request.body.itemQuantity;
+        let itemMinPar = request.body.itemMinPar;
+        let itemMaxPar = request.body.itemMaxPar;
+
+        let sql = "UPDATE 'items' SET itemDescription = '"
+            +itemDescription+
+            "', itemQuantity = '"
+            +itemQuantity+
+            "', itemMinPar = '"
+            +itemMinPar+
+            "', itemMaxPar = '"
+            +itemMaxPar+
+            "' WHERE itemID = '"
+            +itemID+
+            "';";
+
+        await conn.query(sql,function(err,result){
+            if(err) {
+                console.log("An error occurred: ",err);
+                response.send("error");
+            }
+            else {
+                response.send("Success");
+            }
+        })
+        conn.end();
+    } catch (error){
+        response.send("Ran into error ",error);
+        console.log("Ran into error in /items get path ",error);
+    }
+})
+
 app.listen(port, ()=>console.log("App listening on ",port));
