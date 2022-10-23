@@ -9,15 +9,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 const port = 3000;
 
 //localhost
-const hostname = '18.116.15.247';
+const hostname = 'localhost';
 //root local
 //user vps
-const username = 'user';
+const username = 'root';
 //mysql local
 //SE342 vps
-const password = 'SE342';
+const password = 'mysql';
 const database = 'inventory_manager';
-
+//displaying all items
 app.get("/items",async function(request,response){
     try{
         let conn = mysql.createConnection({host:hostname, user:username, password:password, database:database});
@@ -37,7 +37,7 @@ app.get("/items",async function(request,response){
         console.log("Ran into error in /items get path ",error);
     }
 })
-
+//updating item
 app.post("/items",async function(request,response){
     try{
         let conn = mysql.createConnection({host:hostname, user:username, password:password, database:database});
@@ -48,8 +48,8 @@ app.post("/items",async function(request,response){
         let itemQuantity = request.body.itemQuantity;
         let itemMinPar = request.body.itemMinPar;
         let itemMaxPar = request.body.itemMaxPar;
-
-        let sql = "UPDATE 'items' SET itemDescription = '"
+    //let sql = \UPDATE 'items' SET itemDescription = "${itemDescription}", itemQuantity = "${itemQuantity}", itemMinPar = "${itemMinPar}", itemMaxPar = "${itemMaxPar}" WHERE itemID = "${itemID}";\
+        let sql = "UPDATE items SET itemDescription = '"
             +itemDescription+
             "', itemQuantity = '"
             +itemQuantity+
@@ -60,6 +60,42 @@ app.post("/items",async function(request,response){
             "' WHERE itemID = '"
             +itemID+
             "';";
+
+        await conn.query(sql,function(err,result){
+            if(err) {
+                console.log("An error occurred: ",err);
+                response.send("error");
+            }
+            else {
+                response.send("Success");
+            }
+        })
+        conn.end();
+    } catch (error){
+        response.send("Ran into error ",error);
+        console.log("Ran into error in /items post path ",error);
+    }
+})
+//adding item
+app.put("/items",async function(request,response){
+    try{
+        let conn = mysql.createConnection({host:hostname, user:username, password:password, database:database});
+        await conn.connect();
+
+        let itemDescription = request.body.itemDescription;
+        let itemQuantity = request.body.itemQuantity;
+        let itemMinPar = request.body.itemMinPar;
+        let itemMaxPar = request.body.itemMaxPar;
+
+        let sql = "INSERT INTO 'items' (itemDescription, itemQuantity, itemMinPar, itemMaxPar) VALES ('"
+            +itemDescription+
+            "','"
+            +itemQuantity+
+            "','"
+            +itemMinPar+
+            "','"
+            +itemMaxPar+
+            "');";
 
         await conn.query(sql,function(err,result){
             if(err) {

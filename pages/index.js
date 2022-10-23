@@ -11,7 +11,7 @@ export default function Home({itemList}) {
     //this needs to happen when user updates a record on front end -- values passed need to correlate to itemID, itemDescription, itemQuantity, itemMinPar, itemMaxPar
     //this can be set to be activated with an input field with an onChange method -- may be easier than using a useEffect
     //data will be printed to screen with input fields from an array, so to have a useEffect track each of these may be more difficult than just an onChange method in each record input field
-    const res1 = axios.post('http://'+serverAddress+':'+port+'/items', {itemID: itemID, itemDescription: itemDescription, itemQuantity: itemQuantity, itemMinPar: itemMinPar, itemMaxPar: itemMaxPar})
+/*    const res1 = axios.post('http://'+serverAddress+':'+port+'/items', {itemID: itemID, itemDescription: itemDescription, itemQuantity: itemQuantity, itemMinPar: itemMinPar, itemMaxPar: itemMaxPar})
         .then(function(result){
             let rep = result.data;
             if (rep == "Success"){
@@ -20,7 +20,7 @@ export default function Home({itemList}) {
             else{
                 //do stuff here to inform user DB record was not updated
             }
-        })
+        })*/
     return(
         <div>
             All items in database are:
