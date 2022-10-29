@@ -87,15 +87,15 @@ app.put("/items",async function(request,response){
         let itemMinPar = request.body.itemMinPar;
         let itemMaxPar = request.body.itemMaxPar;
 
-        let sql = "INSERT INTO 'items' (itemDescription, itemQuantity, itemMinPar, itemMaxPar) VALES ('"
+        let sql = "INSERT INTO items (itemDescription, itemQuantity, itemMinPar, itemMaxPar) VALUES ('"
             +itemDescription+
-            "','"
+            "',"
             +itemQuantity+
-            "','"
+            ","
             +itemMinPar+
-            "','"
+            ","
             +itemMaxPar+
-            "');";
+            ");";
 
         await conn.query(sql,function(err,result){
             if(err) {
@@ -109,7 +109,34 @@ app.put("/items",async function(request,response){
         conn.end();
     } catch (error){
         response.send("Ran into error ",error);
-        console.log("Ran into error in /items post path ",error);
+        console.log("Ran into error in /items put path ",error);
+    }
+})
+
+//deleting record
+app.put("/removeItem",async function(request,response){
+    try{
+        let conn = mysql.createConnection({host:hostname, user:username, password:password, database:database});
+        await conn.connect();
+
+        let itemID = request.body.itemID;
+
+        let sql = `DELETE FROM items WHERE itemID = "${itemID}";`
+
+
+        await conn.query(sql,function(err,result){
+            if(err) {
+                console.log("An error occurred: ",err);
+                response.send("error");
+            }
+            else {
+                response.send("Success");
+            }
+        })
+        conn.end();
+    } catch (error){
+        response.send("Ran into error ",error);
+        console.log("Ran into error in /removeItem put path ",error);
     }
 })
 
